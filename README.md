@@ -1,6 +1,6 @@
 # **Recruitment API**
 
-This Recruitment API allows users to submit and manage recruitment data, such as personal details, skills, motivations, and project descriptions. It is built with Django and integrates seamlessly with frontend applications like React.
+The Recruitment API enables users to register and provide additional information such as their skills, motivations, projects they want to join, and other relevant data. This API is designed for seamless integration with frontend frameworks like React.
 
 ---
 
@@ -14,16 +14,21 @@ The API is hosted at:
 
 ## **Features**
 
-1. Submit and manage user data (e.g., name, registration number, department).
-2. Associate additional questions and answers with each user:
-   - Clubs (list of strings).
-   - Motivation.
+1. **Dynamic Project Management**:
+   - Admins can add, edit, or remove projects dynamically through the admin interface.
+   - Users select a project to join from the available list.
+
+2. **User Information**:
+   - Basic personal details (first name, last name, middle name, course, and year of study).
+
+3. **Additional Questions**:
+   - Clubs (as a list, or "None"/"Other" for descriptions).
+   - Motivation for joining.
    - Skills (list of strings).
    - Explanation of a big project or solution.
    - Reason to join.
-   - GitHub profile link (optional).
-   - Selected picture choice (string).
-3. Fully RESTful API designed for integration with React or other frontend frameworks.
+
+4. Fully RESTful API for backend/frontend integration.
 
 ---
 
@@ -35,11 +40,11 @@ The API is hosted at:
 #### Request Body:
 ```json
 {
-    "fname": "Mtu",
-    "mname": "Mbadi",
-    "lname": "Sana",
-    "regno": "xxxx-xx-xxxxx",
-    "department": "ETE"
+    "fname": "Jane",
+    "mname": "Doe",
+    "lname": "Smith",
+    "course": "CEIT",
+    "year_of_study": 3
 }
 ```
 
@@ -47,11 +52,11 @@ The API is hosted at:
 ```json
 {
     "id": 1,
-    "fname": "Mtu",
-    "mname": "Mbadi",
-    "lname": "Sana",
-    "regno": "xxxx-xx-xxxxx",
-    "department": "ETE"
+    "fname": "Jane",
+    "mname": "Doe",
+    "lname": "Smith",
+    "course": "CEIT",
+    "year_of_study": 3
 }
 ```
 
@@ -64,13 +69,12 @@ The API is hosted at:
 ```json
 {
     "user": 1,
+    "project": 2,
     "clubs": ["Photography", "Coding"],
     "motivation": "I want to contribute to impactful projects.",
-    "skills": ["Python", "React", "Problem Solving"],
-    "picture_choice": "picture1",
-    "github_link": "https://github.com/example",
-    "big_project": "Built a real-time chat application.",
-    "reason_to_join": "To work on meaningful projects and grow my skills."
+    "skills": ["Python", "Django", "Problem Solving"],
+    "big_project": "Created an energy management system.",
+    "reason_to_join": "To grow my skills and work on meaningful projects."
 }
 ```
 
@@ -79,13 +83,12 @@ The API is hosted at:
 {
     "id": 1,
     "user": 1,
+    "project": 2,
     "clubs": ["Photography", "Coding"],
     "motivation": "I want to contribute to impactful projects.",
-    "skills": ["Python", "React", "Problem Solving"],
-    "picture_choice": "picture1",
-    "github_link": "https://github.com/example",
-    "big_project": "Built a real-time chat application.",
-    "reason_to_join": "To work on meaningful projects and grow my skills."
+    "skills": ["Python", "Django", "Problem Solving"],
+    "big_project": "Created an energy management system.",
+    "reason_to_join": "To grow my skills and work on meaningful projects."
 }
 ```
 
@@ -98,23 +101,30 @@ The API is hosted at:
 ```json
 {
     "id": 1,
-    "fname": "John",
+    "fname": "Jane",
     "mname": "Doe",
     "lname": "Smith",
-    "regno": "ETE123456789",
-    "department": "ETE",
+    "course": "CEIT",
+    "year_of_study": 3,
     "questions": {
         "id": 1,
+        "project": "Energy",
         "clubs": ["Photography", "Coding"],
         "motivation": "I want to contribute to impactful projects.",
-        "skills": ["Python", "React", "Problem Solving"],
-        "picture_choice": "picture1",
-        "github_link": "https://github.com/example",
-        "big_project": "Built a real-time chat application.",
-        "reason_to_join": "To work on meaningful projects and grow my skills."
+        "skills": ["Python", "Django", "Problem Solving"],
+        "big_project": "Created an energy management system.",
+        "reason_to_join": "To grow my skills and work on meaningful projects."
     }
 }
 ```
+
+---
+
+### **4. Create/Manage Projects**
+Admins can manage the projects dynamically through the admin interface:
+- Add new projects.
+- Edit project names.
+- Delete unused projects.
 
 ---
 
@@ -144,11 +154,11 @@ const createUser = async (userData) => {
 
 // Example usage
 const newUser = {
-    fname: "Mtu",
-    mname: "Mbadi",
-    lname: "Sana",
-    regno: "xxxx-xx-xxxxx",
-    department: "ETE"
+    fname: "Jane",
+    mname: "Doe",
+    lname: "Smith",
+    course: "CEIT",
+    year_of_study: 3
 };
 createUser(newUser);
 ```
@@ -171,13 +181,12 @@ const createQuestions = async (userId, questionData) => {
 
 // Example usage
 const newQuestions = {
+    project: 2, // Project ID
     clubs: ["Photography", "Coding"],
     motivation: "I want to contribute to impactful projects.",
-    skills: ["Python", "React", "Problem Solving"],
-    picture_choice: "picture1",
-    github_link: "https://github.com/example",
-    big_project: "Built a real-time chat application.",
-    reason_to_join: "To work on meaningful projects and grow my skills."
+    skills: ["Python", "Django", "Problem Solving"],
+    big_project: "Created an energy management system.",
+    reason_to_join: "To grow my skills and work on meaningful projects."
 };
 createQuestions(1, newQuestions);
 ```
@@ -203,10 +212,11 @@ getUserWithQuestions(1);
 
 ## **Data Format**
 ### **Skills and Clubs**
-- **Skills**: Provide as an array of strings. Example: `["Python", "React", "Problem Solving"]`.
-- **Clubs**: Provide as an array of strings. Example: `["Photography", "Coding"]`.
+- **Skills**: Provide as an array of strings. Example: `["Python", "Django", "React"]`.
+- **Clubs**: Provide as an array of strings. If not in any club, enter `"None"`. For other descriptions, use `"Other"` and add a custom description.
 
-### **Picture Choices**
-- Pictures are handled in the frontend, and you only need to pass the picture name, e.g., `"picture1"`, `"picture2"`, etc.
+### **Projects**
+- Projects are managed dynamically via the admin interface.
+- Pass the project ID when submitting questions.
 
 ---
