@@ -25,7 +25,7 @@ class User(models.Model):
     )
 
     def __str__(self):
-        return f"{self.fname} {self.lname}"
+        return f"{self.fname}"
 
 
 class Project(models.Model):
@@ -81,7 +81,7 @@ class Question(models.Model):
     )
 
     def __str__(self):
-        return f"Questions for {self.user.fname} {self.user.lname}"
+        return f"Questions for {self.user.fname}"
 
 
 
