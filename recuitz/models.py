@@ -1,9 +1,9 @@
 from django.db import models
 
 class User(models.Model):
-    fname = models.CharField(max_length=20, null=False, blank=False)
-    mname = models.CharField(max_length=20, null=True, blank=True)
-    lname = models.CharField(max_length=20, null=False, blank=False)
+    fname = models.CharField(max_length=40, null=False, blank=False)
+    email = models.EmailField(blank=False, default="johndoe@example.com")
+    phone = models.CharField(max_length=13)
     course = models.CharField(
         max_length=10,
         null=False,
@@ -74,6 +74,10 @@ class Question(models.Model):
         blank=False,
         default="I am just interested",
         help_text="Explain why you want to join."
+    )
+    github_link = models.URLField(
+        null=True,
+        blank=True
     )
 
     def __str__(self):
